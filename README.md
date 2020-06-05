@@ -34,5 +34,4 @@ calendarKurdishToPersian([month, day, year])
 calendarKurdishFromIslamic([month, day, year])
 calendarKurdishToIslamic([month, day, year])
 ```
-
 </div>
