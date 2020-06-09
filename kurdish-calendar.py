@@ -310,15 +310,3 @@ def calendarKurdishToIslamic (date):
 
 def calendarKurdishMonth (month):
         return calendarKurdishMonthNameArray[month - 1]
-
-while True:
-        date = input("> ").split('/')
-        m = int(date[1])
-        d = int(date[2])
-        y = int(date[0])
-        print(calendarKurdishFromGregorian([m, d, y]))
-        print(calendarKurdishFromPersian([m, d, y]))
-        print(calendarKurdishFromIslamic([m, d, y]))
-        print(calendarKurdishToGregorian([m, d, y]))
-        print(calendarKurdishToPersian([m, d, y]))
-        print(calendarKurdishToIslamic([m, d, y]))
