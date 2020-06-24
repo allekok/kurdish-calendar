@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ckb" >
+	<head>
+		<title>ڕۆژژمێری کوردی</title>
+		<meta charset="utf-8" >
+		<meta name="viewport" content="width=device-width" >
+		<style>
+		 body {
+			 font-size:16px;
+			 margin:1em;
+		 }
+		 #today,#date-conversion {
+			 padding-right:1.5em;
+		 }
+		 i {
+			 display:inline-block;
+			 background:#eee;
+			 font-style:normal;
+			 font-weight:bold;
+			 padding:.1em .5em;
+			 margin-left:.5em;
+		 }
+		 input {
+			 display:block;
+			 border:0;
+			 border-bottom:3px solid #ccc;
+			 padding:1.3em;
+			 font-size:inherit;
+			 width:100%;
+			 box-sizing:border-box;
+			 direction:ltr;
+			 text-align:center;
+		 }
+		</style>
+	</head>
+	<body>
+		<div id="today-container">
+			<h2>ئەمڕۆ بە کاتی:</h2>
+			<div id="today"><p>. . .</p></div>
+		</div>
+		<div id="date-conversion-container">
+			<h2>گۆڕینی ڕێکەوت:</h2>
+			<i>جۆری نووسین: ڕۆژ / مانگ / ساڵ</i>
+			<div id="date-conversion">
+				<input type="text" id="kurd-date"
+				       placeholder="کوردی">
+				<input type="text" id="grêg-date"
+				       placeholder="گریگۆری">
+				<input type="text" id="êran-date"
+				       placeholder="ئێرانی">
+				<input type="text" id="îslam-date"
+				       placeholder="ئیسلامی">
+			</div>
+		</div>
+	</body>
+	<script src="kurdish-calendar.js"></script>
+	<script>
+	 const today = document.getElementById("today")
+	 const timezones = [
+		 ["مەهاباد", "Asia/Tehran"],
+		 ["ئامەد", "Europe/Istanbul"],
+		 ["هەولێر", "Asia/Baghdad"],
+		 ["قامیشلۆ", "Asia/Damascus"]
+	 ]
+	 const kurdTxt = document.getElementById("kurd-date"),
+	       grêgTxt = document.getElementById("grêg-date"),
+	       êranTxt = document.getElementById("êran-date"),
+	       îslamTxt = document.getElementById("îslam-date")
+	 function getUrl (url, callback) {
+		 const x = new XMLHttpRequest()
+		 x.open("get", url)
+		 x.onload = () => callback(x.responseText)
+		 x.send()
+	 }
+	 function getTimeStamp (callback) {
+		 const url = "https://worldtimeapi.org/api/timezone/Etc/UTC";
+		 getUrl(url, (json) => {
+			 json = JSON.parse(json)
+			 time = json.unixtime * 1000
+			 callback(time)
+		 })
+	 }
+	 function printTime (timestamp) {
+		 const obj = new Date(timestamp)
+		 let str = ""
+		 for(const i in timezones) {
+			 const city = timezones[i]
+			 const date = K(obj.toLocaleString(
+				 "en-US", { timeZone: city[1] }))
+			 str += "<p><i>" + city[0] + "</i> " + date + "</p>"
+		 }
+		 today.innerHTML = str
+	 }
+	 function K (str) {
+		 let obj = str.split(","),
+		     dateObj = obj[0].split("/"),
+		     timeStr = obj[1]
+		 timeStr = timeStr.replace(/PM/gi, "پاش‌نیوەڕۆ")
+		 timeStr = timeStr.replace(/AM/gi, "بەیانی")
+		 dateObj = calendarKurdishFromGregorian([
+			 Number(dateObj[0]),
+			 Number(dateObj[1]),
+			 Number(dateObj[2])])
+		 const month = calendarKurdishMonth(dateObj[0])
+		 const dateStr = dateObj[1] + "ی " + month + "ی " +
+				 dateObj[2] + "ی کوردی" + timeStr
+		 return ckNums(dateStr)
+	 }
+	 function convertNums (str, f, t) {
+		 const assoc = {
+			 en: ["1","2","3","4","5","6","7","8","9","0"],
+			 ck: ["١","٢","٣","٤","٥","٦","٧","٨","٩","٠"]}
+		 for(const i in assoc.en)
+			 str = str.replace(new RegExp(assoc[f][i],"g"),
+					   assoc[t][i])
+		 return str
+	 }
+	 function ckNums (str) {
+		 return convertNums(str, "en", "ck")
+	 }
+	 function enNums (str) {
+		 return convertNums(str, "ck", "en")
+	 }
+	 function parseDate (str) {
+		 str = enNums(str)
+		 str = str.trim()
+		 str = str.replace(/[-| ,;.،؛؍]+/g, "/")
+		 str = str.replace(/\/+/g, "/")
+		 str = str.split("/")
+		 return [parseInt(str[1]),
+			 parseInt(str[2]),
+			 parseInt(str[0])]
+	 }
+	 function _ (obj) {
+		 const str = `${obj[2]}/${obj[0]}/${obj[1]}`
+		 if(str.indexOf("NaN") === -1)
+			 return ckNums(str)
+		 return ""
+	 }
+	 function convertDate (el) {
+		 if(el.id == "kurd-date") {
+			 grêgTxt.value = _(calendarKurdishToGregorian(
+				 parseDate(el.value)))
+			 êranTxt.value = _(calendarKurdishToPersian(
+				 parseDate(el.value)))
+			 îslamTxt.value = _(calendarKurdishToIslamic(
+				 parseDate(el.value)))
+		 }
+		 else if(el.id == "grêg-date") {
+			 kurdTxt.value = _(calendarKurdishFromGregorian(
+				 parseDate(el.value)))
+			 êranTxt.value = _(calendarKurdishToPersian(
+				 calendarKurdishFromGregorian(
+					 parseDate(el.value))))
+			 îslamTxt.value = _(calendarKurdishToIslamic(
+				 calendarKurdishFromGregorian(
+					 parseDate(el.value))))
+		 }
+		 else if(el.id == "êran-date") {
+			 kurdTxt.value = _(calendarKurdishFromPersian(
+				 parseDate(el.value)))
+			 grêgTxt.value = _(calendarKurdishToGregorian(
+				 calendarKurdishFromPersian(
+					 parseDate(el.value))))
+			 îslamTxt.value = _(calendarKurdishToIslamic(
+				 calendarKurdishFromPersian(
+					 parseDate(el.value))))
+		 }
+		 else if(el.id == "îslam-date") {
+			 kurdTxt.value = _(calendarKurdishFromIslamic(
+				 parseDate(el.value)))
+			 grêgTxt.value = _(calendarKurdishToGregorian(
+				 calendarKurdishFromIslamic(
+					 parseDate(el.value))))
+			 êranTxt.value = _(calendarKurdishToPersian(
+				 calendarKurdishFromIslamic(
+					 parseDate(el.value))))
+		 }
+	 }
+	 getTimeStamp ((timestamp) => {
+		 printTime(timestamp)
+		 setInterval(() => {
+			 timestamp += 1000
+			 printTime(timestamp)
+		 }, 1000)
+	 })
+	 document.querySelectorAll("#date-conversion input").forEach(o =>
+		 o.addEventListener("keyup", () => convertDate(o)))
+	</script>
+</html>
