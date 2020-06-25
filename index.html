@@ -109,6 +109,7 @@
 	 function convertNums (str, f, t) {
 		 const assoc = {
 			 en: ["1","2","3","4","5","6","7","8","9","0"],
+			 fa: ["۰","۱","۲","۳","۴","۵","۶","۷","۸","۹"],
 			 ck: ["١","٢","٣","٤","٥","٦","٧","٨","٩","٠"]}
 		 for(const i in assoc.en)
 			 str = str.replace(new RegExp(assoc[f][i],"g"),
@@ -116,10 +117,12 @@
 		 return str
 	 }
 	 function ckNums (str) {
-		 return convertNums(str, "en", "ck")
+		 return convertNums(convertNums(
+			 str, "en", "ck"), "fa", "ck")
 	 }
 	 function enNums (str) {
-		 return convertNums(str, "ck", "en")
+		 return convertNums(convertNums(
+			 str, "ck", "en"), "fa", "en")
 	 }
 	 function parseDate (str) {
 		 str = enNums(str)
