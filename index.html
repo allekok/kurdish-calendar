@@ -85,13 +85,13 @@
 		 let str = ""
 		 for(const i in timezones) {
 			 const city = timezones[i]
-			 const date = K(obj.toLocaleString(
+			 const date = kurdî(obj.toLocaleString(
 				 "en-US", { timeZone: city[1] }))
 			 str += "<p><i>" + city[0] + "</i> " + date + "</p>"
 		 }
 		 today.innerHTML = str
 	 }
-	 function K (str) {
+	 function kurdî (str) {
 		 let obj = str.split(","),
 		     dateObj = obj[0].split("/"),
 		     timeStr = obj[1]
@@ -127,7 +127,7 @@
 	 function parseDate (str) {
 		 str = enNums(str)
 		 str = str.trim()
-		 str = str.replace(/[-| ,;.،؛؍]+/g, "/")
+		 str = str.replace(/[-| ,;.،؛؍\\]+/g, "/")
 		 str = str.replace(/\/+/g, "/")
 		 str = str.split("/")
 		 return [parseInt(str[1]),
@@ -135,10 +135,9 @@
 			 parseInt(str[0])]
 	 }
 	 function _ (obj) {
-		 const str = `${obj[2]}/${obj[0]}/${obj[1]}`
-		 if(str.indexOf("NaN") === -1)
-			 return ckNums(str)
-		 return ""
+		 for(const o of obj)
+			 if(isNaN(o)) return ""
+		 return ckNums(`${obj[2]}/${obj[0]}/${obj[1]}`)
 	 }
 	 function convertDate (el) {
 		 if(el.id == "kurd-date") {
