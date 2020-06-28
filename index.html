@@ -7,39 +7,58 @@
 		<style>
 		 body {
 			 font-size:16px;
-			 margin:1em;
+			 margin:1em auto;
+			 padding:0 1em;
+			 max-width:800px;
 		 }
-		 #today,#date-conversion {
-			 padding-right:1.5em;
+		 h2 {
+			 color:#FFF;
+			 text-align:center;
+			 margin-bottom:.5em;
+			 border-radius:5px;
+			 font-weight:normal;
+			 padding:.5em 0;
+		 }
+		 p {
+			 font-size:1.08em;
+			 letter-spacing:.5px;
+			 margin:0;
 		 }
 		 i {
 			 display:inline-block;
-			 background:#eee;
 			 font-style:normal;
-			 font-weight:bold;
-			 padding:.1em .5em;
-			 margin-left:.5em;
+			 border-radius:5px;
 		 }
 		 input {
 			 display:block;
 			 border:0;
-			 border-bottom:3px solid #ccc;
+			 border:1px solid #EEE;
+			 border-radius:1em;
 			 padding:1.3em;
-			 font-size:inherit;
+			 font-size:1.1em;
 			 width:100%;
 			 box-sizing:border-box;
 			 direction:ltr;
 			 text-align:center;
+			 margin:.5em auto;
+			 background:none;
+		 }
+		 input:focus {
+			 outline:0;
+		 }
+		 #today div {
+			 margin-bottom:1em;
 		 }
 		</style>
 	</head>
 	<body>
 		<div id="today-container">
-			<h2>ئەمڕۆ بە کاتی:</h2>
-			<div id="today"><p>. . .</p></div>
+			<h2 class="backcolor">ئەمڕۆ بە کاتی</h2>
+			<div id="today"><p style="text-align:center"
+					>. . .</p></div>
 		</div>
 		<div id="date-conversion-container">
-			<h2>گۆڕینی ڕێکەوت:</h2>
+			<h2 class="backcolor">گۆڕینی ڕێکەوت</h2>
 			<i>جۆری نووسین: ڕۆژ / مانگ / ساڵ</i>
 			<div id="date-conversion">
 				<input type="text" id="kurd-date"
@@ -87,7 +106,7 @@
 			 const city = timezones[i]
 			 const date = kurdî(obj.toLocaleString(
 				 "en-US", { timeZone: city[1] }))
-			 str += "<p><i>" + city[0] + "</i> " + date + "</p>"
+			 str += "<div><p><i class='forecolor'>" + city[0] + "</i></p><p>" + date + "</p></div>"
 		 }
 		 today.innerHTML = str
 	 }
@@ -188,5 +207,16 @@
 	 })
 	 document.querySelectorAll("#date-conversion input").forEach(o =>
 		 o.addEventListener("keyup", () => convertDate(o)))
+
+	 /* Lookings */
+	 const colors = ["#06D", "#0D6", "#D06", "#D60",
+			 "#900", "#00E", "#0A0"]
+	 const color_id = Math.round(Math.random() * (colors.length-1))
+	 const the_color = colors[color_id]
+	 const style_el = document.createElement("STYLE")
+	 style_el.innerHTML = `.forecolor{color:${the_color}}` +
+			      `.backcolor{background:${the_color}}` +
+			      `input:focus{border-color:${the_color}}`;
+	 document.head.appendChild(style_el)
 	</script>
 </html>
