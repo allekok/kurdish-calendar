@@ -210,14 +210,18 @@
 		 o.addEventListener("keyup", () => convertDate(o)))
 
 	 /* Lookings */
-	 const colors = ["#06D", "#0D6", "#D06", "#D60",
-			 "#900", "#00E", "#0A0"]
+	 const colors = ["#A00", "#00E", "#3A0"]
 	 const color_id = Math.round(Math.random() * (colors.length-1))
 	 const the_color = colors[color_id]
 	 const style_el = document.createElement("STYLE")
 	 style_el.innerHTML = `.forecolor{color:${the_color}}` +
 			      `.backcolor{background:${the_color}}` +
-			      `input:focus{border-color:${the_color}}`;
+			      `input:focus{border-color:${the_color}}` +
+			      `::-webkit-scrollbar{width:1em}` + 
+			      `::-webkit-scrollbar-track{background:#FFF}` + 
+			      `::-webkit-scrollbar-thumb{background:${the_color}}` +
+			      `::selection{color:#FFF;background:${the_color}}` +
+			      `::-moz-selection{color:#FFF;background:${the_color}}`;
 	 document.head.appendChild(style_el)
 	</script>
 </html>
