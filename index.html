@@ -98,11 +98,11 @@
 		 x.send()
 	 }
 	 function getTimeStamp (callback) {
-		 const url = "https://worldtimeapi.org/api/timezone/Etc/UTC";
-		 getUrl(url, json => {
-			 json = JSON.parse(json)
-			 time = json.unixtime * 1000
-			 callback(time)
+		 const url = "timestamp.php";
+		 getUrl(url, timestamp => {
+			 timestamp = Number(timestamp)
+			 timestamp *= 1000
+			 callback(timestamp)
 		 })
 	 }
 	 function printTime (timestamp) {
