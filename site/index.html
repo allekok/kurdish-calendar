@@ -4,13 +4,19 @@
 		<title>ڕۆژژمێری کوردی</title>
 		<meta charset="utf-8" >
 		<meta name="viewport" content="width=device-width" >
-		<meta property="og:image" content="site/logo.png">
-		<link rel="manifest" href="site/site.webmanifest">
-		<link rel="apple-touch-icon" href="site/logo.png">
+		<meta property="og:image" content="logo.png">
+		<link rel="manifest" href="site.webmanifest">
+		<link rel="apple-touch-icon" href="logo.png">
 		<meta name="source-code" content="https://github.com/allekok/kurdish-calendar">
 		<style>
+		 @font-face {
+			 font-family:"nesx";
+			 font-display:swap;
+			 src:url("//allekok.github.io/src/frontend/style/DroidNaskh-Regular.woff2") format("woff2");
+		 }
 		 body {
-			 font-size:16px;
+			 font-family:"nesx";
+			 font-size:14px;
 			 margin:1em auto;
 			 padding:0 1em;
 			 max-width:800px;
@@ -34,9 +40,10 @@
 			 border-radius:5px;
 		 }
 		 input {
+			 font-family:inherit;
 			 display:block;
 			 border:0;
-			 border:1px solid #EEE;
+			 border:1px solid #DDD;
 			 border-radius:1em;
 			 padding:1.3em;
 			 font-size:1.1em;
@@ -78,7 +85,7 @@
 			</div>
 		</div>
 	</body>
-	<script src="kurdish-calendar.js"></script>
+	<script src="../kurdish-calendar.js"></script>
 	<script>
 	 const today = document.getElementById("today")
 	 const timezones = [
@@ -98,7 +105,7 @@
 		 x.send()
 	 }
 	 function getTimeStamp (callback) {
-		 const url = "https://allekok.ir/kurdish-calendar/timestamp.php";
+		 const url = "https://allekok.ir/kurdish-calendar/site/timestamp.php";
 		 getUrl(url, timestamp => {
 			 timestamp = Number(timestamp)
 			 timestamp *= 1000
