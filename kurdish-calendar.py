@@ -145,7 +145,7 @@ calendarPersianEpoch = calendarJulianToAbsolute([3, 19, 622])
 
 def calendarPersianLeapYearP (year):
         return (mod((mod(mod(((year + 2346)
-                              if (year <= 0)
+                              if (0 <= year)
                               else (year + 2347)), 2820)
                          , 768)
                      * 683)

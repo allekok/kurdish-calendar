@@ -163,7 +163,7 @@ function calendarJulianToAbsolute (date) {
 const calendarPersianEpoch = calendarJulianToAbsolute([3, 19, 622])
 
 function calendarPersianLeapYearP (year) {
-	return (mod((mod(mod((year <= 0) ?
+	return (mod((mod(mod((0 <= year) ?
 			     (year + 2346) :
 			     (year + 2347), 2820)
 			 , 768)
