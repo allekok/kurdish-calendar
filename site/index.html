@@ -67,8 +67,9 @@
 	<body>
 		<div id="today-container">
 			<h2 class="backcolor">ئەمڕۆ بە کاتی</h2>
-			<div id="today"><p style="text-align:center"
-					>. . .</p></div>
+			<div id="today">
+				<p style="text-align:center">. . .</p>
+			</div>
 		</div>
 		<div id="date-conversion-container">
 			<h2 class="backcolor">گۆڕینی ڕێکەوت</h2>
@@ -87,6 +88,7 @@
 	</body>
 	<script src="../kurdish-calendar.js"></script>
 	<script>
+	 /* Globals */
 	 const today = document.getElementById("today")
 	 const timezones = [
 		 ["مەهاباد", "Asia/Tehran"],
@@ -98,13 +100,15 @@
 	       grêgTxt = document.getElementById("grêg-date"),
 	       êranTxt = document.getElementById("êran-date"),
 	       îslamTxt = document.getElementById("îslam-date")
-	 function getUrl (url, callback) {
+
+	 /* Functions */
+	 function getUrl(url, callback) {
 		 const x = new XMLHttpRequest()
 		 x.open("get", url)
 		 x.onload = () => callback(x.responseText)
 		 x.send()
 	 }
-	 function getTimeStamp (callback) {
+	 function getTimeStamp(callback) {
 		 const url = "timestamp.php";
 		 getUrl(url, timestamp => {
 			 timestamp = Number(timestamp)
@@ -112,7 +116,7 @@
 			 callback(timestamp)
 		 })
 	 }
-	 function printTime (timestamp) {
+	 function printTime(timestamp) {
 		 const obj = new Date(timestamp)
 		 let str = ""
 		 for(const i in timezones) {
@@ -123,12 +127,12 @@
 		 }
 		 today.innerHTML = str
 	 }
-	 function kurdî (str) {
+	 function kurdî(str) {
 		 let obj = str.split(","),
 		     dateObj = obj[0].split("/"),
 		     timeStr = obj[1]
-		 timeStr = timeStr.replace(/PM/gi, "پاش‌نیوەڕۆ")
-		 timeStr = timeStr.replace(/AM/gi, "بەیانی")
+		 timeStr = timeStr.replace(/PM/i, "پاش‌نیوەڕۆ")
+		 timeStr = timeStr.replace(/AM/i, "بەیانی")
 		 dateObj = calendarKurdishFromGregorian([
 			 Number(dateObj[0]),
 			 Number(dateObj[1]),
@@ -138,7 +142,7 @@
 				 dateObj[2] + "ی کوردی" + timeStr
 		 return ckNums(dateStr)
 	 }
-	 function convertNums (str, f, t) {
+	 function convertNums(str, f, t) {
 		 const assoc = {
 			 en: ["0","1","2","3","4","5","6","7","8","9"],
 			 fa: ["۰","۱","۲","۳","۴","۵","۶","۷","۸","۹"],
@@ -148,15 +152,15 @@
 					   assoc[t][i])
 		 return str
 	 }
-	 function ckNums (str) {
+	 function ckNums(str) {
 		 return convertNums(convertNums(
 			 str, "en", "ck"), "fa", "ck")
 	 }
-	 function enNums (str) {
+	 function enNums(str) {
 		 return convertNums(convertNums(
 			 str, "ck", "en"), "fa", "en")
 	 }
-	 function parseDate (str) {
+	 function parseDate(str) {
 		 str = enNums(str)
 		 str = str.trim()
 		 str = str.replace(/[-| ,;.،؛؍\\]+/g, "/")
@@ -166,12 +170,12 @@
 			 parseInt(str[2]),
 			 parseInt(str[0])]
 	 }
-	 function _ (obj) {
+	 function _(obj) {
 		 for(const o of obj)
 			 if(isNaN(o)) return ""
 		 return ckNums(`${obj[2]}/${obj[0]}/${obj[1]}`)
 	 }
-	 function convertDate (el) {
+	 function convertDate(el) {
 		 if(el.id == "kurd-date") {
 			 grêgTxt.value = _(calendarKurdishToGregorian(
 				 parseDate(el.value)))
@@ -211,7 +215,9 @@
 					 parseDate(el.value))))
 		 }
 	 }
-	 getTimeStamp (timestamp => {
+
+	 /* Run */
+	 getTimeStamp(timestamp => {
 		 printTime(timestamp)
 		 setInterval(() => {
 			 timestamp += 1000
@@ -223,7 +229,7 @@
 
 	 /* Lookings */
 	 const colors = ["#09D", "#D60", "#0C4", "#4C0", "#90E"]
-	 const color_id = Math.round(Math.random() * (colors.length-1))
+	 const color_id = Math.floor(Math.random() * colors.length)
 	 const the_color = colors[color_id]
 	 const style_el = document.createElement("STYLE")
 	 style_el.innerHTML = `.forecolor{color:${the_color}}` +
