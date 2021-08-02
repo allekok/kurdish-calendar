@@ -9,6 +9,15 @@
 		<link rel="apple-touch-icon" href="logo.png">
 		<meta name="source-code" content="https://github.com/allekok/kurdish-calendar">
 		<style>
+		 :root {
+			 --back-color:#0DF;
+			 --fore-color:#000;
+			 --scrollbar-thumb-color:rgba(0,0,0,.2);
+			 --placeholder-color:rgba(0,0,0,.5);
+			 --input-back-color:rgba(255,255,255,.3);
+			 --input-focus-color:rgba(255,255,255,.7);
+			 --today-shadow-color:#FFF;
+		 }
 		 @font-face {
 			 font-family:"nesx";
 			 font-display:swap;
@@ -17,62 +26,111 @@
 		 body {
 			 font-family:"nesx";
 			 font-size:14px;
-			 margin:1em auto;
-			 padding:0 1em;
+			 margin:0 auto;
+			 padding:0 1rem;
 			 max-width:800px;
+			 background:var(--back-color);
+			 color:var(--fore-color);
 		 }
 		 h2 {
-			 color:#FFF;
 			 text-align:center;
-			 margin-bottom:.5em;
-			 border-radius:5px;
+			 margin:0;
 			 font-weight:normal;
-			 padding:.5em 0;
+			 padding:2rem 0;
+			 font-size:1.7rem;
 		 }
 		 p {
-			 font-size:1.08em;
+			 font-size:1.1rem;
+			 margin:.15rem 0;
 			 letter-spacing:.5px;
-			 margin:0;
 		 }
 		 i {
-			 display:inline-block;
 			 font-style:normal;
-			 border-radius:5px;
+			 font-size:1rem;
 		 }
 		 input {
 			 font-family:inherit;
 			 display:block;
 			 border:0;
-			 border:1px solid #DDD;
-			 border-radius:1em;
-			 padding:1.3em;
-			 font-size:1.1em;
+			 border-radius:.7rem;
+			 padding:1.1rem;
+			 font-size:1.1rem;
 			 width:100%;
 			 box-sizing:border-box;
 			 direction:ltr;
 			 text-align:center;
-			 margin:.5em auto;
+			 margin:1rem auto;
 			 background:none;
-			 box-shadow:none;
+			 appearance:none;
 			 -webkit-appearance:none;
+			 background:var(--input-back-color);
+			 color:var(--fore-color);
+			 box-shadow:0 .15rem 1rem -.9rem var(--fore-color);
 		 }
 		 input:focus {
 			 outline:0;
 		 }
+		 #date-conversion-container {
+			 box-shadow:0 0 5rem -3rem var(--fore-color);
+			 padding:0 1rem 1rem;
+			 margin-bottom:3rem;
+		 }
+		 #today-container {
+			 margin-bottom:3rem;
+		 }
 		 #today div {
-			 margin-bottom:1em;
+			 padding:1rem;
+			 margin-bottom:1rem;
+			 box-shadow:0 0 5rem -1.5rem var(--today-shadow-color);
+		 }
+		 #today p {
+			 display:inline-block;
+			 padding:.1rem .6rem;
+		 }
+		 .city {
+			 color:var(--back-color);
+			 background:var(--fore-color);
+			 display:inline-block;
+			 padding:.1rem .6rem;
+			 border-radius:.3rem;
+			 margin-bottom:.5rem;
+		 }
+		 input:focus {
+			 background:var(--input-focus-color);
+		 }
+		 ::-webkit-scrollbar {
+			 width:.75rem
+		 }
+		 ::-webkit-scrollbar-track {
+			 background:none;
+			 margin:.15rem 0;
+		 }
+		 ::-webkit-scrollbar-thumb {
+			 background:var(--scrollbar-thumb-color);
+			 border-radius:1rem;
+		 }
+		 ::selection {
+			 color:var(--back-color);
+			 background:var(--fore-color)
+		 }
+		 ::-moz-selection {
+			 color:var(--back-color);
+			 background:var(--fore-color)
+		 }
+		 ::placeholder {
+			 color:var(--placeholder-color);
 		 }
 		</style>
 	</head>
 	<body>
 		<div id="today-container">
-			<h2 class="backcolor">ئەمڕۆ بە کاتی</h2>
+			<h2>ئەمڕۆ بە کاتی</h2>
 			<div id="today">
 				<p style="text-align:center">. . .</p>
 			</div>
 		</div>
 		<div id="date-conversion-container">
-			<h2 class="backcolor">گۆڕینی ڕێکەوت</h2>
+			<h2>گۆڕینی ڕێکەوت</h2>
 			<i>جۆری نووسین: ڕۆژ / مانگ / ساڵ</i>
 			<div id="date-conversion">
 				<input type="text" id="kurd-date"
@@ -123,7 +181,7 @@
 			 const city = timezones[i]
 			 const date = kurdî(obj.toLocaleString(
 				 "en-US", { timeZone: city[1] }))
-			 str += "<div><p><i class='forecolor'>" + city[0] + "</i></p><p>" + date + "</p></div>"
+			 str += "<div><p class='city'>" + city[0] + "</p><p>" + date + "</p></div>"
 		 }
 		 today.innerHTML = str
 	 }
@@ -226,20 +284,5 @@
 	 })
 	 document.querySelectorAll("#date-conversion input").forEach(o =>
 		 o.addEventListener("keyup", () => convertDate(o)))
-
-	 /* Lookings */
-	 const colors = ["#09D", "#D60", "#0C4", "#4C0", "#90E"]
-	 const color_id = Math.floor(Math.random() * colors.length)
-	 const the_color = colors[color_id]
-	 const style_el = document.createElement("STYLE")
-	 style_el.innerHTML = `.forecolor{color:${the_color}}` +
-			      `.backcolor{background:${the_color}}` +
-			      `input:focus{border-color:${the_color}}` +
-			      `::-webkit-scrollbar{width:1em}` + 
-			      `::-webkit-scrollbar-track{background:#FFF}` + 
-			      `::-webkit-scrollbar-thumb{background:${the_color}}` +
-			      `::selection{color:#FFF;background:${the_color}}` +
-			      `::-moz-selection{color:#FFF;background:${the_color}}`;
-	 document.head.appendChild(style_el)
 	</script>
 </html>
