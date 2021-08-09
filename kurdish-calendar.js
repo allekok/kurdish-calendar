@@ -22,10 +22,8 @@ function div (x, y) {
 }
 
 function mod (x, y) {
-	let m = x % y
-	if(m < 0 ^ y < 0)
-		return y >= 0 ? y + m : m + y
-	return m
+	const r = x % y
+	return y * r < 0 ? r + y : r
 }
 
 /* 

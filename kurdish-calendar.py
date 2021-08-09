@@ -23,10 +23,8 @@ def div (x, y):
         return floor(x / y)
 
 def mod (x, y):
-        m = x % y
-        if (m < 0) != (y < 0):
-                return y + m if y >= 0 else m + y
-        return m
+        r = x % y
+        return r + y if y * r < 0 else r
 
 ''' 
 Translated from:

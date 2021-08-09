@@ -23,10 +23,8 @@ function div ($x, $y) {
 }
 
 function mod ($x, $y) {
-	$m = $x % $y;
-	if($m < 0 xor $y < 0)
-		return $y >= 0 ? $y + $m : $m + $y;
-	return $m;
+	$r = $x % $y;
+	return $y * $r < 0 ? $r + $y : $r;
 }
 
 /* 
