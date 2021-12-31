@@ -1,5 +1,5 @@
 '''
-Copyright (C) 2020 allekok.
+Copyright (C) 2020-2021 allekok.
 Author: Payam <payambapiri.97@gmail.com>
 
 This software is free software: you can redistribute it and/or modify
@@ -43,8 +43,7 @@ def calendarExtractYear (date):
         return date[2]
 
 def calendarUpdateYear (date, year):
-        date[2] = year
-        return date
+        return [date[0], date[1], year]
 
 def calendarLeapYearP (year):
         if year < 0: year = abs(year) - 1

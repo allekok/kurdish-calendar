@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2020 allekok.
+  Copyright (C) 2020-2021 allekok.
   Author: Payam <payambapiri.97@gmail.com>
 
   This software is free software: you can redistribute it and/or modify
@@ -46,8 +46,7 @@ function calendarExtractYear (date) {
 }
 
 function calendarUpdateYear (date, year) {
-	date[2] = year
-	return date
+	return [date[0], date[1], year]
 }
 
 function calendarLeapYearP (year) {
