@@ -113,6 +113,13 @@ def calendarLastDayOfMonth (month, year):
         return [31, 28, 31, 30, 31, 30,
                 31, 31, 30, 31, 30, 31][month - 1]
 
+def calendarDayOfWeek (date, absFunc=calendarAbsoluteFromGregorian):
+        '''
+        With a slight modification to the original version:
+        An additional argument for different calendars
+        '''
+        return mod(absFunc(date), 7)
+
 '''
 Translated from:
 gnu-emacs/lisp/calendar/cal-julian.el:
@@ -193,6 +200,9 @@ def calendarPersianFromAbsolute (date):
         day = date - (calendarPersianToAbsolute([month, 1, year]) - 1)
         return [month, day, year]
 
+def calendarPersianDayOfWeek (date):
+        return calendarDayOfWeek(date, calendarPersianToAbsolute)
+
 ''' 
 Translated from:
 gnu-emacs/lisp/calendar/cal-islam.el:
@@ -257,6 +267,9 @@ def calendarIslamicFromAbsolute (date):
         day = date - ((calendarIslamicToAbsolute([month, 1, year])) - 1)
         return [month, day, year]
 
+def calendarIslamicDayOfWeek (date):
+	return calendarDayOfWeek(date, calendarIslamicToAbsolute)
+
 ''' Kurdish Calendar '''
 calendarKurdishMonthNameArray = [
         "خاکەلێوە",
@@ -271,6 +284,16 @@ calendarKurdishMonthNameArray = [
 	"بەفرانبار",
 	"ڕێبەندان",
 	"ڕەشەمە"
+]
+
+calendarKurdishDayNameArray = [
+	"یەک‌شەممە",
+	"دووشەممە",
+	"سێ‌شەممە",
+	"چوارشەممە",
+	"پێنج‌شەممە",
+	"هەینی",
+	"شەممە",
 ]
 
 def calendarKurdishFromAbsolutePersian (date):
@@ -307,3 +330,9 @@ def calendarKurdishToIslamic (date):
 
 def calendarKurdishMonth (month):
         return calendarKurdishMonthNameArray[month - 1]
+
+def calendarKurdishDayOfWeek (date):
+	return calendarDayOfWeek(date, calendarKurdishToAbsolutePersian)
+
+def calendarKurdishDayOfWeekName (date):
+	return calendarKurdishDayNameArray[calendarKurdishDayOfWeek(date)]

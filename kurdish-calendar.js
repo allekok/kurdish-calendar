@@ -131,6 +131,12 @@ function calendarLastDayOfMonth (month, year) {
 		31, 31, 30, 31, 30, 31][--month]
 }
 
+function calendarDayOfWeek (date, absFunc=calendarAbsoluteFromGregorian) {
+	/* With a slight modification to the original version:
+	   An additional argument for different calendars */
+	return mod(absFunc(date), 7)
+}
+
 /*
   Translated from:
   gnu-emacs/lisp/calendar/cal-julian.el:
@@ -217,6 +223,10 @@ function calendarPersianFromAbsolute (date) {
 	return [month, day, year]
 }
 
+function calendarPersianDayOfWeek (date) {
+	return calendarDayOfWeek(date, calendarPersianToAbsolute)
+}
+
 /* 
    Translated from:
    gnu-emacs/lisp/calendar/cal-islam.el:
@@ -285,6 +295,10 @@ function calendarIslamicFromAbsolute (date) {
 	return [month, day, year]
 }
 
+function calendarIslamicDayOfWeek (date) {
+	return calendarDayOfWeek(date, calendarIslamicToAbsolute)
+}
+
 /* Kurdish Calendar */
 const calendarKurdishMonthNameArray = [
 	"خاکەلێوە",
@@ -299,6 +313,16 @@ const calendarKurdishMonthNameArray = [
 	"بەفرانبار",
 	"ڕێبەندان",
 	"ڕەشەمە"
+]
+
+const calendarKurdishDayNameArray = [
+	"یەک‌شەممە",
+	"دووشەممە",
+	"سێ‌شەممە",
+	"چوارشەممە",
+	"پێنج‌شەممە",
+	"هەینی",
+	"شەممە",
 ]
 
 function calendarKurdishFromAbsolutePersian (date) {
@@ -343,4 +367,12 @@ function calendarKurdishToIslamic (date) {
 
 function calendarKurdishMonth (month) {
 	return calendarKurdishMonthNameArray[--month]
+}
+
+function calendarKurdishDayOfWeek (date) {
+	return calendarDayOfWeek(date, calendarKurdishToAbsolutePersian)
+}
+
+function calendarKurdishDayOfWeekName (date) {
+	return calendarKurdishDayNameArray[calendarKurdishDayOfWeek(date)]
 }
