@@ -10,13 +10,14 @@
 		<meta name="source-code" content="https://github.com/allekok/kurdish-calendar">
 		<style>
 		 :root {
-			 --back-color:#0DF;
+			 --back-color:#FFF;
+			 --spec-color:#0DF;
 			 --fore-color:#000;
 			 --scrollbar-thumb-color:rgba(0,0,0,.2);
 			 --placeholder-color:rgba(0,0,0,.5);
-			 --input-back-color:rgba(255,255,255,.3);
+			 --input-back-color:#FFF;
 			 --input-focus-color:rgba(255,255,255,.7);
-			 --today-shadow-color:#FFF;
+			 --today-shadow-color:#CCC;
 		 }
 		 @font-face {
 			 font-family:"nesx";
@@ -36,12 +37,11 @@
 			 text-align:center;
 			 margin:0;
 			 font-weight:normal;
-			 padding:2rem 0;
-			 font-size:1.7rem;
+			 padding:1rem 0;
+			 font-size:1.5rem;
 		 }
 		 p {
-			 font-size:1.1rem;
-			 margin:.15rem 0;
+			 margin:0;
 			 letter-spacing:.5px;
 		 }
 		 i {
@@ -52,9 +52,9 @@
 			 font-family:inherit;
 			 display:block;
 			 border:0;
-			 border-radius:.7rem;
+			 border-radius:0;
 			 padding:1.1rem;
-			 font-size:1.1rem;
+			 font-size:1rem;
 			 width:100%;
 			 box-sizing:border-box;
 			 direction:ltr;
@@ -74,26 +74,26 @@
 			 box-shadow:0 0 5rem -3rem var(--fore-color);
 			 padding:0 1rem 1rem;
 			 margin-bottom:3rem;
+			 background:var(--spec-color);
 		 }
 		 #today-container {
 			 margin-bottom:3rem;
 		 }
 		 #today div {
-			 padding:1rem;
 			 margin-bottom:1rem;
 			 box-shadow:0 0 5rem -1.5rem var(--today-shadow-color);
 		 }
-		 #today p {
-			 display:inline-block;
-			 padding:.1rem .6rem;
+		 #today p:nth-child(2) {
+			 padding:.5rem 1rem;
+			 line-height:2.5;
+			 font-size:.9rem;
 		 }
 		 .city {
-			 color:var(--back-color);
-			 background:var(--fore-color);
-			 display:inline-block;
-			 padding:.1rem .6rem;
-			 border-radius:.3rem;
-			 margin-bottom:.5rem;
+			 font-size:1rem;
+			 color:var(--fore-color);
+			 background:var(--spec-color);
+			 text-align:center;
+			 padding:.7rem 1rem;
 		 }
 		 input:focus {
 			 background:var(--input-focus-color);
@@ -110,11 +110,11 @@
 			 border-radius:1rem;
 		 }
 		 ::selection {
-			 color:var(--back-color);
+			 color:var(--spec-color);
 			 background:var(--fore-color)
 		 }
 		 ::-moz-selection {
-			 color:var(--back-color);
+			 color:var(--spec-color);
 			 background:var(--fore-color)
 		 }
 		 ::placeholder {
@@ -196,8 +196,12 @@
 			 Number(dateObj[1]),
 			 Number(dateObj[2])])
 		 const month = calendarKurdishMonth(dateObj[0])
-		 const dateStr = dateObj[1] + "ی " + month + "ی " +
-				 dateObj[2] + "ی کوردی" + timeStr
+		 const dayName = calendarKurdishDayOfWeekName(dateObj)
+		 const dateStr = dayName + " " +
+				 dateObj[1] + "ی " + month + "ی " +
+				 dateObj[2] + "ی کوردی" + "<br>" +
+				 `${dateObj[1]}؍${dateObj[0]}؍${dateObj[2]}` +
+				 " - " + timeStr
 		 return ckNums(dateStr)
 	 }
 	 function convertNums(str, f, t) {
